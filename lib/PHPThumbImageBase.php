@@ -1,5 +1,6 @@
 <?php
-abstract class PHPThumbImageBase extends CComponent {
+require_once "Component.php";
+abstract class PHPThumbImageBase extends Component {
 
 	/**
 	 * GIF format
@@ -96,7 +97,7 @@ abstract class PHPThumbImageBase extends CComponent {
 	 *
 	 * @param $srcImagePath string Full path to source image
 	 *
-	 * @throws CException Throw exception if image file not found
+	 * @throws Exception Throw exception if image file not found
 	 */
 	public function setSrcImagePath($srcImagePath) {
 		$this->_srcImagePath = $srcImagePath;
@@ -113,7 +114,7 @@ abstract class PHPThumbImageBase extends CComponent {
 	public static function create($srcImagePath) {
 		try {
 			$imageData = getimagesize($srcImagePath);
-		} catch (CException $e) {
+		} catch (Exception $e) {
 			die($e->getMessage());
 		}
 
@@ -138,7 +139,7 @@ abstract class PHPThumbImageBase extends CComponent {
 				break;
 
 			default:
-				throw new CException('Unsupported image type');
+				throw new Exception('Unsupported image type');
 				break;
 		}
 	}
@@ -167,7 +168,7 @@ abstract class PHPThumbImageBase extends CComponent {
 				break;
 
 			default:
-				throw new CException('Unsupported image type');
+				throw new Exception('Unsupported image type');
 				break;
 		}
 	}
@@ -194,7 +195,7 @@ abstract class PHPThumbImageBase extends CComponent {
 		if ($this->_imageData === null) {
 			$data = getimagesize($this->getSrcImagePath());
 			if (!$data) {
-				throw new CException('Can`t read image data');
+				throw new Exception('Can`t read image data');
 			}
 
 			$this->setImageData($data);
@@ -226,11 +227,11 @@ abstract class PHPThumbImageBase extends CComponent {
 	 * );</pre>
 	 *
 	 * @return PHPThumbImageBase Instance of new image.
-	 * @throws CException Throw exception if destination directory is not writable
+	 * @throws Exception Throw exception if destination directory is not writable
 	 */
 	public function save($fileName, $format = null, $options = array()) {
 		if (!is_writeable(dirname($fileName))) {
-			throw new CException('File not writable: ' . $fileName);
+			throw new Exception('File not writable: ' . $fileName);
 		}
 
 		$newFile = $this->copy($format);

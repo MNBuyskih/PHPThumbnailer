@@ -2,12 +2,14 @@
 defined('PHPTHUMB_PATH') or define('PHPTHUMB_PATH', dirname(__FILE__));
 defined('PHPTHUMB_FILTERS_PATH') or define('PHPTHUMB_FILTERS_PATH', PHPTHUMB_PATH . '/filters/');
 
+require "Component.php";
+
 /**
  * @property PHPThumbImageBase $image  Source PHPThumbImage object (before manipulations)
  * @property integer           $width  Image width
  * @property integer           $height Image height
  */
-class PHPThumb extends CComponent {
+class PHPThumb extends Component {
 
 	/**
 	 * Source PHPThumbImage object (before manipulations)
@@ -33,7 +35,7 @@ class PHPThumb extends CComponent {
 
 	public function show() {
 		if (headers_sent() && php_sapi_name() != 'cli') {
-			throw new CException('Cannot show image, headers have already been sent');
+			throw new Exception('Cannot show image, headers have already been sent');
 		}
 
 		$this->getImage()->show();

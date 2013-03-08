@@ -1,6 +1,6 @@
 <?php
-
-abstract class PHPThumbFilter extends CComponent {
+require_once PHPTHUMB_PATH . "/Component.php";
+abstract class PHPThumbFilter extends Component {
 
 	/**
 	 * Working instance of PHPThumb
@@ -28,12 +28,12 @@ abstract class PHPThumbFilter extends CComponent {
 			$className = "PHPThumb{$plugin}";
 			$file      = PHPTHUMB_FILTERS_PATH . $className . ".php";
 			if (!file_exists($file)) {
-				throw new CException("Filter {$plugin} not found.");
+				throw new Exception("Filter {$plugin} not found.");
 			}
 
 			require_once $file;
 			if (!class_exists($className)) {
-				throw new CException("Plugin {$plugin} not found.");
+				throw new Exception("Plugin {$plugin} not found.");
 			}
 
 			$plugin = new $className($thumb);
