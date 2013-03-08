@@ -208,7 +208,7 @@ abstract class PHPThumbImageBase extends CComponent {
 		$this->_height     = $data[1];
 		$this->_dimensions = $data[3];
 		$this->_mime       = $data['mime'];
-		$this->_channels   = $data['channels'];
+		$this->_channels   = @$data['channels'];
 		$this->_bits       = $data['bits'];
 
 		$this->_imageData = $data;
