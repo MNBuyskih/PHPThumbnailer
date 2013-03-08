@@ -1,15 +1,33 @@
 <?php
+
+/**
+ * Path to  current file
+ * @var string
+ */
 defined('PHPTHUMB_PATH') or define('PHPTHUMB_PATH', dirname(__FILE__));
+
+/**
+ * Path to filters directory
+ */
 defined('PHPTHUMB_FILTERS_PATH') or define('PHPTHUMB_FILTERS_PATH', PHPTHUMB_PATH . '/filters/');
 
+/**
+ * Require base class
+ */
 require "Component.php";
 
 /**
+ * Class for work with image
+ *
  * @property PHPThumbImageBase $image  Source PHPThumbImage object (before manipulations)
  * @property integer           $width  Image width
  * @property integer           $height Image height
+ * @property PHPThumbImageBase:FORMAT_GIF|PHPThumbImageBase:FORMAT_JPG|PHPThumbImageBase:FORMAT_PNG Image Format
+ *
+ * @author  M.N.B. <buyskih@gmail.com>
+ * @package PHPThumbler
  */
-class PHPThumb extends Component {
+class PHPThumbler extends Component {
 
 	/**
 	 * Source PHPThumbImage object (before manipulations)
@@ -17,6 +35,9 @@ class PHPThumb extends Component {
 	 */
 	private $_image;
 
+	/**
+	 * @return object|PHPThumbImageBase|PHPThumbImageGif|PHPThumbImageJpg|PHPThumbImagePng
+	 */
 	public function getImage() {
 		return $this->_image;
 	}
@@ -33,6 +54,11 @@ class PHPThumb extends Component {
 		}
 	}
 
+	/**
+	 * Show an image
+	 * @return PHPThumbler Instance of current PHPThumbler
+	 * @throws Exception
+	 */
 	public function show() {
 		if (headers_sent() && php_sapi_name() != 'cli') {
 			throw new Exception('Cannot show image, headers have already been sent');
@@ -56,27 +82,41 @@ class PHPThumb extends Component {
 	 *     'quality' => 100 // JPEG-quality (default 80)
 	 * );</pre>
 	 *
-	 * @return PHPThumb
+	 * @return PHPThumbler
 	 */
 	public function save($fileName, $format = null, $options = array()) {
 		return new self($this->getImage()->save($fileName, $format, $options));
 	}
 
+	/**
+	 * Image format
+	 * @return PHPThumbImageBase::FORMAT_GIF|PHPThumbImageBase::FORMAT_JPG|PHPThumbImageBase::FORMAT_PNG
+	 */
 	public function getFormat() {
 		return $this->getImage()->getFormat();
 	}
 
+	/**
+	 * Image width
+	 * @return integer
+	 */
 	public function getWidth() {
 		return $this->getImage()->getWidth();
 	}
 
+	/**
+	 * Image height
+	 * @return integer
+	 */
 	public function getHeight() {
 		return $this->getImage()->getHeight();
 	}
 
 	/**
-	 * @param PHPThumbFilter|string $plugin
-	 * @param array                 $options
+	 * Apply filter to image
+	 *
+	 * @param PHPThumbFilter|string $plugin  Plugin object or plugin name
+	 * @param array                 $options List of plugin options
 	 */
 	public function filter($plugin, $options = array()) {
 		require_once "filters/PHPThumbFilter.php";

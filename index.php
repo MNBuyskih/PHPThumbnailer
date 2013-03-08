@@ -7,8 +7,7 @@ require_once "lib/PHPThumb.php";
 $srcImage = dirname(__FILE__) . '\test\car.jpg';
 $thumb    = new PHPThumb($srcImage);
 $thumb->filter("AdaptiveResize", array(
-                              'width'  => 100,
-                              'height' => 100,
-                         ));
-//$newThumb = $thumb->save(dirname(__FILE__) . '\test\safe-copy.jpg', PHPThumbImageBase::FORMAT_JPG, array('quality' => 80));
+                                      'width'  => 100,
+                                      'height' => 100,
+                                 ));
 $thumb->show();
