@@ -1,5 +1,16 @@
 <?php
+/**
+ * Require base class
+ */
 require_once "Component.php";
+
+/**
+ * Base proxy class for each image types proxy classes
+ * @package PHPThumbler
+ * @author  M.N.B. <buyskih@gmail.com>
+ * @date 2013.03.09
+ * @abstract
+ */
 abstract class PHPThumbImageBase extends Component {
 
 	/**
@@ -30,7 +41,7 @@ abstract class PHPThumbImageBase extends Component {
 	private $_resource;
 
 	/**
-	 * Image format
+	 * Current image format
 	 * @var PHPThumbImageBase::FORMAT_GIF|PHPThumbImageBase::FORMAT_JPG|PHPThumbImageBase::FORMAT_PNG
 	 */
 	protected $_format;
@@ -111,6 +122,14 @@ abstract class PHPThumbImageBase extends Component {
 		return $this->_srcImagePath;
 	}
 
+	/**
+	 * Create new instance of PHPThumbImageBase
+	 *
+	 * @param $srcImagePath string Source image path
+	 *
+	 * @return PHPThumbImageGif|PHPThumbImageJpg|PHPThumbImagePng
+	 * @throws Exception
+	 */
 	public static function create($srcImagePath) {
 		try {
 			$imageData = getimagesize($srcImagePath);
@@ -144,6 +163,14 @@ abstract class PHPThumbImageBase extends Component {
 		}
 	}
 
+	/**
+	 * Create copy of current image
+	 *
+	 * @param null|PHPThumbImageBase::FORMAT_GIF|PHPThumbImageBase::FORMAT_JPG|PHPThumbImageBase::FORMAT_PNG $format New image format. By default - null - format not changed.
+	 *
+	 * @return PHPThumbImageGif|PHPThumbImageJpg|PHPThumbImagePng Copy of image
+	 * @throws Exception
+	 */
 	public function copy($format = null) {
 		if (!$format) {
 			$format = $this->getFormat();
@@ -173,16 +200,31 @@ abstract class PHPThumbImageBase extends Component {
 		}
 	}
 
+	/**
+	 * Get image format
+	 * @return PHPThumbImageBase::FORMAT_PNG|PHPThumbImageBase::FORMAT_JPG|PHPThumbImageBase::FORMAT_GIF Image format
+	 */
 	public function getFormat() {
 		return $this->_format;
 	}
 
+	/**
+	 * Set new image resource
+	 *
+	 * @param $resource resource Image resource
+	 *
+	 * @return PHPThumbImageBase Current instance if PHPThumbImageBase
+	 */
 	public function setResource($resource) {
 		$this->_resource = $resource;
 
 		return $this;
 	}
 
+	/**
+	 * Current image resource
+	 * @return resource Image resource
+	 */
 	public function getResource() {
 		if ($this->_resource === null) {
 			$this->_resource = $this->_getResource();
@@ -191,6 +233,11 @@ abstract class PHPThumbImageBase extends Component {
 		return $this->_resource;
 	}
 
+	/**
+	 * Get result of getimagesize
+	 * @return array
+	 * @throws Exception
+	 */
 	public function getImageData() {
 		if ($this->_imageData === null) {
 			$data = getimagesize($this->getSrcImagePath());
@@ -204,6 +251,13 @@ abstract class PHPThumbImageBase extends Component {
 		return $this->_imageData;
 	}
 
+	/**
+	 * Set image data
+	 *
+	 * @param array $data
+	 *
+	 * @return PHPThumbImageBase Current instance of image
+	 */
 	public function setImageData($data) {
 		$this->_width      = $data[0];
 		$this->_height     = $data[1];
@@ -242,10 +296,25 @@ abstract class PHPThumbImageBase extends Component {
 		return $newFile;
 	}
 
+	/**
+	 * Show image
+	 * @return mixed
+	 */
+	public function show() {
+		return $this->_show();
+	}
+
+	/**
+	 * Remove source image file from file system
+	 */
 	public function remove() {
 		unlink($this->getSrcImagePath());
 	}
 
+	/**
+	 * Get image height
+	 * @return integer Image height
+	 */
 	public function getHeight() {
 		if (!$this->_imageData) {
 			$this->getImageData();
@@ -254,6 +323,10 @@ abstract class PHPThumbImageBase extends Component {
 		return $this->_height;
 	}
 
+	/**
+	 * Get image width
+	 * @return integer Image width
+	 */
 	public function getWidth() {
 		if (!$this->_imageData) {
 			$this->getImageData();
@@ -262,9 +335,27 @@ abstract class PHPThumbImageBase extends Component {
 		return $this->_width;
 	}
 
+	/**
+	 * Return image resource. For each image type return specify image resource.
+	 * @return resource Image resource
+	 */
 	protected abstract function _getResource();
 
-	public abstract function _save($fileName, $options = array());
+	/**
+	 * Save an image in new location. For each image type saving is different.
+	 *
+	 * @param string $fileName New file name.
+	 * @param array  $options  Options list. For example: <pre>array (
+	 *     'quality' => 100 // JPEG-quality (default 80). For JPG only
+	 * );</pre>
+	 *
+	 * @return PHPThumbImageBase Current instance of PHPThumbImageBase
+	 */
+	protected abstract function _save($fileName, $options = array());
 
-	public abstract function show();
+	/**
+	 * Show an image in browser. For each image type showing is different.
+	 * @return PHPThumbImageBase Current instance of PHPThumbImageBase.
+	 */
+	protected abstract function _show();
 }

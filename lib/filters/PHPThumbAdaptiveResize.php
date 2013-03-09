@@ -1,5 +1,15 @@
 <?php
+/**
+ * Require resize filter class
+ */
 require_once "PHPThumbResize.php";
+
+/**
+ * Adaptive resize filter for PHPThumbler
+ * @package PHPThumbler
+ * @author  M.N.B. <buyskih@gmail.com>
+ * @date 2013.03.09
+ */
 class PHPThumbAdaptiveResize extends PHPThumbResize {
 
 	/**
@@ -73,6 +83,14 @@ class PHPThumbAdaptiveResize extends PHPThumbResize {
 		return $this;
 	}
 
+	/**
+	 * @param $width     integer Current image width
+	 * @param $height    integer Current image height
+	 * @param $maxWidth  integer Maximum image width
+	 * @param $maxHeight integer Maximum image height
+	 *
+	 * @return array Calculated image size array('newWidth', 'newHeight')
+	 */
 	protected function calcImageSizeStrict($width, $height, $maxWidth, $maxHeight) {
 		// first, we need to determine what the longest resize dimension is..
 		$newDimensions = array();

@@ -1,5 +1,16 @@
 <?php
+/**
+ * Require base class
+ */
 require_once PHPTHUMB_PATH . "/Component.php";
+
+/**
+ * Base class for filters
+ * @package PHPThumbler
+ * @author  M.N.B. <buyskih@gmail.com>
+ * @date 2013.03.09
+ * @abstract
+ */
 abstract class PHPThumbFilter extends Component {
 
 	/**
@@ -10,20 +21,29 @@ abstract class PHPThumbFilter extends Component {
 
 	/**
 	 * Run plugin
-	 *
 	 */
 	public abstract function run();
 
 	/**
 	 * Constructor
 	 *
-	 * @param PHPThumb $thumb       Working instance of PHPThumb
+	 * @param PHPThumbler $thumb       Working instance of PHPThumbler
 	 */
-	public function __construct(PHPThumb $thumb) {
+	public function __construct(PHPThumbler $thumb) {
 		$this->thumb = $thumb;
 	}
 
-	public static function create(PHPThumb $thumb, $plugin, $options = array()) {
+	/**
+	 * Create filter object and return it.
+	 *
+	 * @param PHPThumbler           $thumb   Instance of PHPThumbler.
+	 * @param PHPThumbFilter|string $plugin  Plugin object or plugin name.
+	 * @param array                 $options List of filter options.
+	 *
+	 * @return PHPThumbFilter New instance of filter object
+	 * @throws Exception
+	 */
+	public static function create(PHPThumbler $thumb, $plugin, $options = array()) {
 		if (!$plugin instanceof self) {
 			$className = "PHPThumb{$plugin}";
 			$file      = PHPTHUMB_FILTERS_PATH . $className . ".php";

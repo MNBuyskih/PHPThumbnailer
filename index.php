@@ -3,9 +3,9 @@
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
 
-require_once "lib/PHPThumb.php";
+require_once "lib/PHPThumbler.php";
 $srcImage = dirname(__FILE__) . '\test\car.jpg';
-$thumb    = new PHPThumb($srcImage);
+$thumb    = new PHPThumbler($srcImage);
 $thumb->filter("AdaptiveResize", array(
                                       'width'  => 100,
                                       'height' => 100,
