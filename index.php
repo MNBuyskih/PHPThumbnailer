@@ -7,7 +7,7 @@ require_once "lib/PHPThumbler.php";
 $srcImage = dirname(__FILE__) . '\test\car.jpg';
 $thumb    = new PHPThumbler($srcImage);
 $thumb->filter("AdaptiveResize", array(
-                                      'width'  => 100,
-                                      'height' => 100,
+                                      'width'  => 300,
+                                      'height' => 300,
                                  ));
 $thumb->show();

@@ -217,6 +217,10 @@ abstract class PHPThumbImageBase extends Component {
 	 */
 	public function setResource($resource) {
 		$this->_resource = $resource;
+		$imageData       = $this->getImageData();
+		$imageData['0']  = imagesx($resource);
+		$imageData['1']  = imagesy($resource);
+		$this->setImageData($imageData);
 
 		return $this;
 	}

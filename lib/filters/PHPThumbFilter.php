@@ -14,8 +14,8 @@ require_once PHPTHUMB_PATH . "/Component.php";
 abstract class PHPThumbFilter extends Component {
 
 	/**
-	 * Working instance of PHPThumb
-	 * @var PHPThumb
+	 * Working instance of PHPThumbler
+	 * @var PHPThumbler
 	 */
 	public $thumb;
 

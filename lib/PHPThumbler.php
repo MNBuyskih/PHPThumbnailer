@@ -19,9 +19,10 @@ require "Component.php";
 /**
  * Class for work with image
  *
- * @property PHPThumbImageBase $image  Source PHPThumbImage object (before manipulations)
- * @property integer           $width  Image width
- * @property integer           $height Image height
+ * @property PHPThumbImageBase $image    Source PHPThumbImage object (before manipulations)
+ * @property integer           $width    Image width
+ * @property integer           $height   Image height
+ * @property resource          $resource Image resource
  * @property PHPThumbImageBase:FORMAT_GIF|PHPThumbImageBase:FORMAT_JPG|PHPThumbImageBase:FORMAT_PNG Image Format
  *
  * @author  M.N.B. <buyskih@gmail.com>
@@ -47,11 +48,24 @@ class PHPThumbler extends Component {
 	 */
 	public function __construct($srcImagePath) {
 		if (is_object($srcImagePath) && $srcImagePath instanceof PHPThumbImageBase) {
-			$this->_image = $srcImagePath;
+			$this->setImage($srcImagePath);
 		} else {
 			require_once 'PHPThumbImageBase.php';
 			$this->_image = PHPThumbImageBase::create($srcImagePath);
 		}
+	}
+
+	/**
+	 * Set current image
+	 *
+	 * @param PHPThumbImageBase $image Instance of PHPThumbImageBase
+	 *
+	 * @return PHPThumbler Current instance of PHPThumbler
+	 */
+	public function setImage(PHPThumbImageBase $image) {
+		$this->image = $image;
+
+		return $this;
 	}
 
 	/**
@@ -110,6 +124,14 @@ class PHPThumbler extends Component {
 	 */
 	public function getHeight() {
 		return $this->getImage()->getHeight();
+	}
+
+	/**
+	 * Get image resource
+	 * @return resource Image resource
+	 */
+	public function getResource() {
+		return $this->getImage()->getResource();
 	}
 
 	/**
